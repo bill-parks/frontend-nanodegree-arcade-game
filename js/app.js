@@ -6,8 +6,9 @@ var Enemy = function(id) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = -200;
-    this.y = 60;
+    //Math.floor(Math.random()*(max-min+1)+min);
+    this.x = Math.floor(Math.random() * -600) + -100;
+    this.y = Math.floor(Math.random() * 200) + 50;
     this.name = "enemy" + id;
     console.log('Enemy instance created ' + this.name);
 }
@@ -23,7 +24,19 @@ Enemy.prototype.update = function(dt) {
     }
     else
     {
-        this.x = -200;
+        //So, each time this resets an enemy at a different screen entry point.
+        //Randomize the enemy.y for starting point and enemy.x for start delay.
+        //If there are less than 5 enemies, add another when one goes off screen.
+        //TODO: add difficulty level to control speed and number of enemies.
+        //TODO: checkCollisions could destroy enemies that are on top of each other.
+        //TODO: create enemy.destroy method then.
+        //Math.floor(Math.random()*(max-min+1)+min);
+        this.x = Math.floor(Math.random() * -600) + -100;
+        this.y = Math.floor(Math.random() * 200) + 50;
+        if (allEnemies.length < 5){
+            var addEnemy = new Enemy(allEnemies.length);
+            allEnemies.push(addEnemy);
+        }
     };
 }
 
@@ -65,7 +78,7 @@ Player.prototype.render = function() {
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
-var addEnemy = new Enemy(1);
+var addEnemy = new Enemy(allEnemies.length);
     allEnemies.push(addEnemy);
 
 // Place the player object in a variable called player
