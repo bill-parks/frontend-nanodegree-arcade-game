@@ -6,8 +6,8 @@ var Enemy = function(id) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 100;
-    this.y = 100;
+    this.x = -200;
+    this.y = 60;
     this.name = "enemy" + id;
     console.log('Enemy instance created ' + this.name);
 }
@@ -18,6 +18,13 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x < 500) {
+        this.x = this.x + (1);
+    }
+    else
+    {
+        this.x = -200;
+    };
 }
 
 // Draw the enemy on the screen, required method for game
