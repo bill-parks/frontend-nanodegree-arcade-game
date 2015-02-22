@@ -86,9 +86,15 @@ var Engine = (function(global) {
         checkCollisions();
     }
 
+
+    /* This function is called by function update().
+    * An exact x and y match between enemy and player was too precise
+    * so we now look at +/- 50.
+    */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
-            if (enemy.x == player.x && enemy.y == player.y){
+            if (enemy.x >= player.x - 50 && enemy.x <= player.x + 50 && enemy.y >= player.y - 50 && enemy.y <= player.y + 50)
+            {
                 gameOver = true;
             }
         });
