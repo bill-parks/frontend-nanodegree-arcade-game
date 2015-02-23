@@ -55,8 +55,8 @@ var Player = function() {
     // The image/sprite for our player, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
-    this.x = 310;
-    this.y = 410;
+    this.x = 200;
+    this.y = 400;
     console.log('Player instance created');
 }
 // Update the enemy's position, required method for game
@@ -75,9 +75,9 @@ Player.prototype.render = function() {
 
 // Now instantiate your objects.
 
-
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
+// Create first enemy object
 var addEnemy = new Enemy(allEnemies.length);
     allEnemies.push(addEnemy);
 

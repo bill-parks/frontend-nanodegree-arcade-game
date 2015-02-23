@@ -18,6 +18,7 @@ var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
+     /* include game over var.
      */
     var doc = global.document,
         win = global.window,
@@ -45,8 +46,12 @@ var Engine = (function(global) {
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
+         * Unless..game is over.
          */
-         if(gameOver != true){
+         if (gameOver) {
+            reset();
+         }
+         else {
             update(dt);
             render();
          }
@@ -90,6 +95,7 @@ var Engine = (function(global) {
     /* This function is called by function update().
     * An exact x and y match between enemy and player was too precise
     * so we now look at +/- 50.
+    * TODO: include enemies colliding with themselves and destroy/recreate or reposition.
     */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
@@ -176,8 +182,15 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+    function loadNewGame() {
+        window.location.reload();
+    }
     function reset() {
         // noop
+        if(gameOver){
+            document.querySelector(".newGame").style.visibility = "visible";
+            document.querySelector("button").addEventListener("click", loadNewGame, false);
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
