@@ -7,7 +7,7 @@ var Enemy = function(id) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     //Math.floor(Math.random()*(max-min+1)+min);
-    this.x = Math.floor(Math.random() * -600) + -100;
+    this.x = Math.floor(Math.random() * -300) + -100;
     this.y = Math.floor(Math.random() * 200) + 50;
     this.name = "enemy" + id;
     console.log('Enemy instance created ' + this.name);
@@ -30,8 +30,8 @@ Enemy.prototype.update = function(dt) {
         //TODO: add difficulty level to control speed and number of enemies.
         //TODO: checkCollisions could destroy enemies that are on top of each other.
         //TODO: create enemy.destroy method then.
-        //Math.floor(Math.random()*(max-min+1)+min);
-        this.x = Math.floor(Math.random() * -600) + -100;
+        //       Math.floor(Math.random()*(max-min+1)+min);
+        this.x = Math.floor(Math.random() * -300) + -100;
         this.y = Math.floor(Math.random() * 200) + 50;
         if (allEnemies.length < 5){
             var addEnemy = new Enemy(allEnemies.length);
@@ -74,13 +74,8 @@ Player.prototype.render = function() {
 
 
 // Now instantiate your objects.
-
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [];
-// Create first enemy object
-var addEnemy = new Enemy(allEnemies.length);
-    allEnemies.push(addEnemy);
-
+var allEnemies = [new Enemy(0)];
 // Place the player object in a variable called player
 var player = new Player();
 

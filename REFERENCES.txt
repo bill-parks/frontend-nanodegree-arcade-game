@@ -1,0 +1,7 @@
+REFERENCES
+
+1. Switch method for keyUp listener - 
+https://developer.mozilla.org/en-US/docs/switch_command_JavaScript
+
+2. JavaScript Random() for staggered enemy entry paths - 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random

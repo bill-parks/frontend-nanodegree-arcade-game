@@ -18,18 +18,29 @@ var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
-     /* include game over var.
+     /* include game over var and New Game div and button.
      */
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
+        div = doc.createElement('div'),
+        btn = doc.createElement('button'),
+        lbl = doc.createTextNode('New Game'),
         ctx = canvas.getContext('2d'),
         lastTime,
         gameOver = false;
 
+    //Add Canvas to body.
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
+    //Add New Game button to div with visibility hidden until game over reset().
+    div.id = "newGame";
+    div.style.visibility = "hidden";
+    doc.body.appendChild(div);
+    btn.appendChild(lbl);
+    document.getElementById("newGame").appendChild(btn);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -90,7 +101,6 @@ var Engine = (function(global) {
         updateEntities(dt);
         checkCollisions();
     }
-
 
     /* This function is called by function update().
     * An exact x and y match between enemy and player was too precise
@@ -159,7 +169,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -182,15 +191,16 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function loadNewGame() {
-        window.location.reload();
-    }
     function reset() {
         // noop
         if(gameOver){
-            document.querySelector(".newGame").style.visibility = "visible";
+            document.querySelector("#newGame").style.visibility = "visible";
             document.querySelector("button").addEventListener("click", loadNewGame, false);
         }
+    }
+    /* Called by button click listener in reset() */
+    function loadNewGame() {
+        window.location.reload();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
