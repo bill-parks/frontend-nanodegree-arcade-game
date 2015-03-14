@@ -1,3 +1,4 @@
+// 3-14-2015 make JSLint recommended changes
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
@@ -18,7 +19,7 @@ var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
-     /* include game over var and New Game div and button.
+     * include game over var and New Game div and button.
      */
     var doc = global.document,
         win = global.window,
@@ -42,64 +43,22 @@ var Engine = (function(global) {
     btn.appendChild(lbl);
     document.getElementById("newGame").appendChild(btn);
 
-    /* This function serves as the kickoff point for the game loop itself
-     * and handles properly calling the update and render methods.
-     */
-    function main() {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
-        var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         * Unless..game is over.
-         */
-         if (gameOver) {
-            reset();
-         }
-         else {
-            update(dt);
-            render();
-         }
-
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        lastTime = now;
-
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        win.requestAnimationFrame(main);
-    };
-
-    /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
-     */
-    function init() {
-        reset();
-        lastTime = Date.now();
-        main();
+    /* Called by button click listener in reset() */
+    function loadNewGame() {
+        window.location.reload();
     }
 
-    /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+    /* This function does nothing but it could have been a good place to
+     * handle game reset states - maybe a new game menu or a game over screen
+     * those sorts of things. It's only called once by the init() method.
      */
-    function update(dt) {
-        updateEntities(dt);
-        checkCollisions();
+    function reset() {
+        // noop
+        if(gameOver){
+            document.querySelector("#newGame").style.visibility = "visible";
+            document.querySelector("button").addEventListener("click", loadNewGame, false);
+        }
     }
 
     /* This function is called by function update().
@@ -127,7 +86,37 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+
         player.update();
+    }
+
+    /* This function is called by main (our game loop) and itself calls all
+     * of the functions which may need to update entity's data. Based on how
+     * you implement your collision detection (when two entities occupy the
+     * same space, for instance when your character should die), you may find
+     * the need to add an additional function call here. For now, we've left
+     * it commented out - you may or may not want to implement this
+     * functionality this way (you could just implement collision detection
+     * on the entities themselves within your app.js file).
+     */
+    function update(dt) {
+        updateEntities(dt);
+        checkCollisions();
+    }
+
+    /* This function is called by the render function and is called on each game
+     * tick. It's purpose is to then call the render functions you have defined
+     * on your enemy and player entities within app.js
+     */
+    function renderEntities() {
+        /* Loop through all of the objects within the allEnemies array and call
+         * the render function you have defined.
+         */
+        allEnemies.forEach(function(enemy) {
+            enemy.render();
+        });
+
+        player.render();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -172,35 +161,50 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    /* This function is called by the render function and is called on each game
-     * tick. It's purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
+    /* This function serves as the kickoff point for the game loop itself
+     * and handles properly calling the update and render methods.
      */
-    function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+    function main() {
+        /* Get our time delta information which is required if your game
+         * requires smooth animation. Because everyone's computer processes
+         * instructions at different speeds we need a constant value that
+         * would be the same for everyone (regardless of how fast their
+         * computer is) - hurray time!
          */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
+        var now = Date.now(),
+            dt = (now - lastTime) / 1000.0;
 
-        player.render();
+        /* Call our update/render functions, pass along the time delta to
+         * our update function since it may be used for smooth animation.
+         * Unless..game is over.
+         */
+         if (gameOver) {
+            reset();
+         }
+         else {
+            update(dt);
+            render();
+         }
+
+        /* Set our lastTime variable which is used to determine the time delta
+         * for the next time this function is called.
+         */
+        lastTime = now;
+
+        /* Use the browser's requestAnimationFrame function to call this
+         * function again as soon as the browser is able to draw another frame.
+         */
+        win.requestAnimationFrame(main);
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* This function does some initial setup that should only occur once,
+     * particularly setting the lastTime variable that is required for the
+     * game loop.
      */
-    function reset() {
-        // noop
-        if(gameOver){
-            document.querySelector("#newGame").style.visibility = "visible";
-            document.querySelector("button").addEventListener("click", loadNewGame, false);
-        }
-    }
-    /* Called by button click listener in reset() */
-    function loadNewGame() {
-        window.location.reload();
+    function init() {
+        reset();
+        lastTime = Date.now();
+        main();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -221,4 +225,4 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
-})(this);
+}(this));

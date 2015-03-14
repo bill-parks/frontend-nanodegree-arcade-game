@@ -1,3 +1,4 @@
+// 3-14-2015 make JSLint recommended changes
 /* Resources.js
  * This is simple an image loading utility. It eases the process of loading
  * image files so that they can be used within your game. It also includes
@@ -6,29 +7,21 @@
  */
 (function() {
     var resourceCache = {};
-    var loading = [];
     var readyCallbacks = [];
 
-    /* This is the publicly accessible image loading function. It accepts
-     * an array of strings pointing to image files or a string for a single
-     * image. It will then call our private image loading function accordingly.
+    /* This function determines if all of the images that have been requested
+     * for loading have in fact been completed loaded.
      */
-    function load(urlOrArr) {
-        if(urlOrArr instanceof Array) {
-            /* If the developer passed in an array of images
-             * loop through each value and call our image
-             * loader on that image file
-             */
-            urlOrArr.forEach(function(url) {
-                _load(url);
-            });
-        } else {
-            /* The developer did not pass an array to this function,
-             * assume the value is a string and call our image loader
-             * directly.
-             */
-            _load(urlOrArr);
+    function isReady() {
+        var ready = true;
+        var k;
+        for(k in resourceCache) {
+            if(resourceCache.hasOwnProperty(k) &&
+               !resourceCache[k]) {
+                ready = false;
+            }
         }
+        return ready;
     }
 
     /* This is our private image loader function, it is
@@ -41,7 +34,7 @@
              * re-loading the image.
              */
             return resourceCache[url];
-        } else {
+        } 
             /* This URL has not been previously loaded and is not present
              * within our cache; we'll need to load this image.
              */
@@ -66,7 +59,28 @@
              * the images src attribute to the passed in URL.
              */
             resourceCache[url] = false;
-            img.src = url;
+            img.src = url;       
+    }
+
+    /* This is the publicly accessible image loading function. It accepts
+     * an array of strings pointing to image files or a string for a single
+     * image. It will then call our private image loading function accordingly.
+     */
+    function load(urlOrArr) {
+        if(urlOrArr instanceof Array) {
+            /* If the developer passed in an array of images
+             * loop through each value and call our image
+             * loader on that image file
+             */
+            urlOrArr.forEach(function(url) {
+                _load(url);
+            });
+        } else {
+            /* The developer did not pass an array to this function,
+             * assume the value is a string and call our image loader
+             * directly.
+             */
+            _load(urlOrArr);
         }
     }
 
@@ -76,20 +90,6 @@
      */
     function get(url) {
         return resourceCache[url];
-    }
-
-    /* This function determines if all of the images that have been requested
-     * for loading have in fact been completed loaded.
-     */
-    function isReady() {
-        var ready = true;
-        for(var k in resourceCache) {
-            if(resourceCache.hasOwnProperty(k) &&
-               !resourceCache[k]) {
-                ready = false;
-            }
-        }
-        return ready;
     }
 
     /* This function will add a function to the callback stack that is called
@@ -108,4 +108,5 @@
         onReady: onReady,
         isReady: isReady
     };
-})();
+
+}());
