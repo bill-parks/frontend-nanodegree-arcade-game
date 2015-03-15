@@ -19,12 +19,12 @@ var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
-     * include game over var and New Game div and button.
+     * include game over var and **New Game div and button.
      */
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
-        div = doc.createElement('div'),
+        buttonDiv = doc.createElement('div'),
         btn = doc.createElement('button'),
         lbl = doc.createTextNode('New Game'),
         ctx = canvas.getContext('2d'),
@@ -37,12 +37,11 @@ var Engine = (function(global) {
     doc.body.appendChild(canvas);
 
     //Add New Game button to div with visibility hidden until game over reset().
-    div.id = "newGame";
-    div.style.visibility = "hidden";
-    doc.body.appendChild(div);
+    buttonDiv.id = "newGame";
+    buttonDiv.style.visibility = "hidden";
+    doc.body.appendChild(buttonDiv);
     btn.appendChild(lbl);
     document.getElementById("newGame").appendChild(btn);
-
 
     /* Called by button click listener in reset() */
     function loadNewGame() {
