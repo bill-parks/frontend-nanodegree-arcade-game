@@ -1,12 +1,21 @@
-frontend-nanodegree-arcade-game
-===============================
+Files required to run this project are:
+  index.html
+  css/
+    style.css
+  images/
+    char-boy.png
+    enemy-bug.png
+    grass-block.png
+    stone-block.png
+    water-block.png
+  js/
+    app.js
+    engine.js
+    resources.js
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+To run the game, please open index.html in your browser.
 
-for self-checking their submission.
-
-===============================
-
+=================
 GAME INSTRUCTIONS
 
   There's a dangerous highway to get accross, full of huge fast-moving bugs!
