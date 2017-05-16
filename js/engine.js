@@ -26,7 +26,7 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         buttonDiv = doc.createElement('div'),
         btn = doc.createElement('button'),
-        lbl = doc.createTextNode('New Game'),
+        lbl = doc.createTextNode('New Game?'),
         ctx = canvas.getContext('2d'),
         lastTime,
         gameOver = false;
@@ -63,12 +63,19 @@ var Engine = (function(global) {
     /* This function is called by function update().
     * An exact x and y match between enemy and player was too precise
     * so we now look at +/- 50.
+    * Include check for player.y reaching the water to trigger a Winner.
     * TODO: include enemies colliding with themselves and destroy/recreate or reposition.
     */
     function checkCollisions() {
+        if (player.y < 0) {
+            console.log('Winner!');
+            gameOver = true;
+            player = new Player();
+        }
         allEnemies.forEach(function(enemy) {
             if (enemy.x >= player.x - 50 && enemy.x <= player.x + 50 && enemy.y >= player.y - 50 && enemy.y <= player.y + 50)
             {
+                console.log('You Lost the game (sorry)');
                 gameOver = true;
             }
         });

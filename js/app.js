@@ -9,9 +9,12 @@ var Enemy = function(id) {
     this.sprite = 'images/enemy-bug.png';
     //Math.floor(Math.random()*(max-min+1)+min);
     this.x = Math.floor(Math.random() * -300) + -100;
-    this.y = Math.floor(Math.random() * 200) + 50;
+    //5-16-2017 Change to choose 1 of 3 lanes randomly
+    //this.y = Math.floor(Math.random() * 200) + 50;
+    this.y = ((Math.floor(Math.random() * 3) + 1) * 83) - 15;
     this.name = "enemy" + id;
     console.log('Enemy instance created ' + this.name);
+    console.log('Enemy instance y ' + this.y);
 };
 
 // Instantiate all enemy objects in an array called allEnemies
@@ -36,7 +39,9 @@ Enemy.prototype.update = function(dt) {
         //TODO: create enemy.destroy method then.
         //       Math.floor(Math.random()*(max-min+1)+min);
         this.x = Math.floor(Math.random() * -300) + -100;
-        this.y = Math.floor(Math.random() * 200) + 50;
+        //5-16-2017 Change to choose 1 of 3 lanes randomly
+        //this.y = Math.floor(Math.random() * 200) + 50;
+        this.y = ((Math.floor(Math.random() * 3) + 1) * 83) - 15;
         if (allEnemies.length < 5){
             var addEnemy = new Enemy(allEnemies.length);
             allEnemies.push(addEnemy);
@@ -94,26 +99,38 @@ document.addEventListener('keyup', function(e) {
 });
 
 // Player.handleInput() method. Move 10 at a time and stay in bounds.
+// 05-16-2017 Change from moving 10 at a time, to using the tile size, width=101 and height=83.
 Player.prototype.handleInput = function(key) {
+var tilewidth = 101,
+    tileheight = 83;
 switch(key) {
   case 'left':
-        if (this.x > 0) {
-           this.x = this.x - 10;
+      if (this.x > 0) {
+          console.log("this.x from = " + this.x);
+          this.x = this.x - tilewidth;
+          console.log("this.x to = " + this.x);
         }
         break;
   case 'right':
-        if (this.x < 410) {
-           this.x = this.x + 10;
+      if (this.x < 402) {
+          console.log("this.x from = " + this.x);
+          this.x = this.x + tilewidth;
+          console.log("this.x to = " + this.x);
         }
         break;
   case 'up':
-       if (this.y > 0){
-            this.y = this.y - 10;
-        }
+      if (this.y > 0) {
+          console.log("this.y from = " + this.y);
+          this.y = this.y - tileheight;
+          console.log("this.y to = " + this.y);
+      }
+
        break;
   case 'down':
-        if (this.y < 430) {
-           this.y = this.y + 10;
+      if (this.y < 318) {
+            console.log("this.y from = " + this.y);
+            this.y = this.y + tileheight;
+            console.log("this.y to = " + this.y);
         }
         break;
     }
